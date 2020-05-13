@@ -17,7 +17,7 @@ namespace ApiTestApp_Grupp3.Models
 
         //-----Följande är utkommenterat tills tillhörande klass är skapad-----//
 
-        // public List <Question> questions { get; set; } --> Lista med frågor
+        public List<Question> questions { get; set; } //--> Lista med frågor. Ska den stå kvar här??
 
         // public List <StudentQuestionAnswer> result { get; set; } --> Lista med resultat
 
