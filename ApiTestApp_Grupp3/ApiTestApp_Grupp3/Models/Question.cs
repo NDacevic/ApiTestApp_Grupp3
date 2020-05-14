@@ -12,7 +12,8 @@ namespace ApiTestApp_Grupp3.Models
 
         [StringLength(50)]
         public string QuestionType { get; set; }
-        public string QuestionText { get; set; } //Inget tak på strängen här eftersom det beror på lärarens fråga
+        [StringLength(3000)]
+        public string QuestionText { get; set; }
 
         [StringLength(50)]
         public string CorrectAnswer { get; set; }
@@ -26,7 +27,7 @@ namespace ApiTestApp_Grupp3.Models
 
         public Course Course { get; set; } //---> FK Course
 
-        public List<TestQuestion> TestQuestion { get; set; } //--> Mellantabell
+        //public List<TestQuestion> TestQuestion { get; set; } //--> Mellantabell
 
         public List<StudentQuestionAnswer> StudentQuestionAnswer { get; set; } //--> Mellantabell
 

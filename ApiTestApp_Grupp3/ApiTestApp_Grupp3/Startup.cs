@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using ApiTestApp_Grupp3.Data;
 
 namespace ApiTestApp_Grupp3
 {
@@ -26,6 +28,9 @@ namespace ApiTestApp_Grupp3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<ApiTestApp_Grupp3Context>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ApiTestApp_Grupp3Context")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

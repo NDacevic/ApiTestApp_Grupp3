@@ -16,16 +16,16 @@ namespace ApiTestApp_Grupp3.Models
        public bool IsActive { get; set; }
        public bool IsGraded { get; set; }
 
-        [NotMapped]
-        public List<Question> questions { get; set; } //--> Lista med frågor.
+       [NotMapped]
+       public List<Question> questions { get; set; } //--> Lista med frågor.
 
        public Course Course { get; set; } // ---> FK till Course
 
-       public List<TestQuestion> TestQuestion { get; set; } //--> Mellantabell
+        //public List<TestQuestion> TestQuestion { get; set; } //--> Mellantabell
 
-       public List<StudentQuestionAnswer> StudentQuestionAnswer { get; set; } //--> Mellantabell
+        public List<StudentQuestionAnswer> StudentQuestionAnswer { get; set; } //--> Mellantabell
 
-       public List<TestResult> TestResult { get; set; } // --> Mellantabell
+        //public List<TestResult> TestResult { get; set; } // --> Mellantabell
 
 
 
