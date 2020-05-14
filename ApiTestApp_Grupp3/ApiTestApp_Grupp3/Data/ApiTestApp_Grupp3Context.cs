@@ -41,9 +41,7 @@ namespace ApiTestApp_Grupp3.Data
                 .WithMany(sq => sq.StudentQuestionAnswer)
                 .HasForeignKey(sqa => sqa.QuestionId);
 
-
-
-           
+            modelBuilder.Entity<TestQuestion>().HasKey(tq => new { tq.TestId, tq.QuestionId });
         }
 
         public DbSet<ApiTestApp_Grupp3.Models.Test> Test { get; set; }
