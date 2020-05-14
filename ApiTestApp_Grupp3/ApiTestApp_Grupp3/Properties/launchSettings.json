@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/ApiTestApp_Grupp3",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:65382",
       "sslPort": 44366
@@ -11,15 +15,17 @@
   "profiles": {
     "IIS Express": {
       "commandName": "Project",
-      "launchUrl": "weatherforecast",
+      "launchUrl": "/api/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "sqlDebugging": false,
+      "nativeDebugging": false
     },
     "ApiTestApp_Grupp3": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "/api/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
