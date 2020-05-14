@@ -13,7 +13,7 @@ namespace ApiTestApp_Grupp3.Models
         public Test Test { get; set; }
         public int QuestionId { get; set; }
         public Question Question { get; set; }
-        public string Answer { get; set; }
+        public string Answer { get; set; } //Inget tak på strängen här eftersom det beror på elevens svar.
         public bool IsCorrect { get; set; }
     }
 }

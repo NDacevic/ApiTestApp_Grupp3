@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,19 +16,16 @@ namespace ApiTestApp_Grupp3.Models
        public bool IsActive { get; set; }
        public bool IsGraded { get; set; }
 
-        
-        public List<Question> questions { get; set; } //--> Lista med frågor. Ska den stå kvar här??
+        [NotMapped]
+        public List<Question> questions { get; set; } //--> Lista med frågor.
 
-        public List<StudentQuestionAnswer> result { get; set; } // --> Lista med resultat
+       public Course Course { get; set; } // ---> FK till Course
 
-         public Course Course { get; set; } // ---> FK till Course
+       public List<TestQuestion> TestQuestion { get; set; } //--> Mellantabell
 
-         public IList<TestQuestion> TestQuestion { get; set; } //--> Mellantabell
+       public List<StudentQuestionAnswer> StudentQuestionAnswer { get; set; } //--> Mellantabell
 
-         public IList<StudentQuestionAnswer> StudentQuestionAnswer { get; set; } //--> Mellantabell
-
-         public IList<TestResult> TestResult { get; set; } // --> Mellantabell
-
+       public List<TestResult> TestResult { get; set; } // --> Mellantabell
 
 
 
