@@ -27,7 +27,7 @@ namespace ApiTestApp_Grupp3.Models
 
         public Course Course { get; set; } //---> FK Course
 
-        //public List<TestQuestion> TestQuestion { get; set; } //--> Mellantabell
+        public List<TestQuestion> TestQuestion { get; set; } //--> Mellantabell
 
         public List<StudentQuestionAnswer> StudentQuestionAnswer { get; set; } //--> Mellantabell
 
