@@ -11,7 +11,6 @@ namespace ApiTestApp_Grupp3.Models
         public Student Student { get; set; }
         public int TestId { get; set; }
         public Test Test { get; set; }
-
         public int TotalPoints { get; set; }
     }
 }

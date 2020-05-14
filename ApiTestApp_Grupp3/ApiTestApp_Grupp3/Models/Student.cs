@@ -29,7 +29,7 @@ namespace ApiTestApp_Grupp3.Models
 
         public List<StudentQuestionAnswer> StudentQuestionAnswer { get; set; } // --> Mellantabell
 
-        //public List<TestResult> TestResult { get; set; } //--> Mellantabell
+        public List<TestResult> TestResult { get; set; } //--> Mellantabell
 
 
 
