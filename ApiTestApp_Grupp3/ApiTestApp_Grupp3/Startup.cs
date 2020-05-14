@@ -29,7 +29,7 @@ namespace ApiTestApp_Grupp3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<ApiTestApp_Grupp3Context>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("MainDBConnection"));
+                options => options.UseSqlServer(Configuration.GetConnectionString("MainDBConnection")));
 
             services.AddControllers();
             services.AddMvc();
