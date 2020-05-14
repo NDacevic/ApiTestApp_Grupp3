@@ -13,6 +13,38 @@ namespace ApiTestApp_Grupp3.Data
             : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TestResult>()
+                .HasKey(tr => new { tr.StudentId, tr.TestId });
+            modelBuilder.Entity<TestResult>()
+                .HasOne(tr => tr.Student)
+                .WithMany(t => t.TestResult)
+                .HasForeignKey(tr => tr.StudentId);
+            modelBuilder.Entity<TestResult>()
+               .HasOne(tr => tr.Test)
+               .WithMany(t => t.TestResult)
+               .HasForeignKey(tr => tr.TestId);
+
+            modelBuilder.Entity<StudentQuestionAnswer>()
+                .HasKey(sqa => new { sqa.StudentId, sqa.TestId, sqa.QuestionId });
+            modelBuilder.Entity<StudentQuestionAnswer>()
+                .HasOne(sqa => sqa.Student)
+                .WithMany(sq => sq.StudentQuestionAnswer)
+                .HasForeignKey(sqa => sqa.StudentId);
+            modelBuilder.Entity<StudentQuestionAnswer>()
+                .HasOne(sqa => sqa.Test)
+                .WithMany(sq => sq.StudentQuestionAnswer)
+                .HasForeignKey(sqa => sqa.TestId);
+            modelBuilder.Entity<StudentQuestionAnswer>()
+                .HasOne(sqa => sqa.Question)
+                .WithMany(sq => sq.StudentQuestionAnswer)
+                .HasForeignKey(sqa => sqa.QuestionId);
+
+
+
+           
+        }
 
         public DbSet<ApiTestApp_Grupp3.Models.Test> Test { get; set; }
 
@@ -21,5 +53,9 @@ namespace ApiTestApp_Grupp3.Data
         public DbSet<ApiTestApp_Grupp3.Models.Student> Student { get; set; }
 
         public DbSet<ApiTestApp_Grupp3.Models.Question> Question { get; set; }
+
+        public DbSet<ApiTestApp_Grupp3.Models.TestResult> TestResult { get; set; }
+
+        public DbSet<ApiTestApp_Grupp3.Models.StudentQuestionAnswer> StudentQuestionAnswer { get; set; }
     }
 }
