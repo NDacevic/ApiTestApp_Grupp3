@@ -15,7 +15,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "Project",
-      "launchUrl": "/api/",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -25,7 +25,7 @@
     "ApiTestApp_Grupp3": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "/api/",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
