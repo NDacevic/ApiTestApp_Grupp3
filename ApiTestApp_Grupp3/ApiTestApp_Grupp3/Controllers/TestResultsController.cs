@@ -32,14 +32,20 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TestResult>> GetTestResult(int id)
         {
-            var testResult = await _context.TestResult.FindAsync(id);
+            var tests = await _context.TestResult.Where(tr => tr.TestId == id).Select(tr => tr).ToListAsync();
+            List<TestResult> testResults = new List<TestResult>();
 
-            if (testResult == null)
+            foreach (var x in tests)
+            {
+                testResults.Add(x);
+            }
+
+            if (testResults.Count == 0)
             {
                 return NotFound();
             }
 
-            return testResult;
+            return Ok(testResults);
         }
 
         // PUT: api/TestResults/5
