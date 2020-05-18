@@ -25,7 +25,10 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Test>>> GetTest()
         {
-            var result=await _context.Test.ToListAsync();
+            var result = await _context.Test.Include(t => t.TestQuestion)
+                .ThenInclude(tq => tq.Question)
+                .Select(t => new { t.TestId, t.Grade, t.Course.CourseName, t.MaxPoints, t.TestDuration, t.IsActive, t.IsGraded, t.StartDate, questions = t.TestQuestion.Select(tq => tq.Question)})
+                .ToListAsync();
             return Ok(result);
         }
 
