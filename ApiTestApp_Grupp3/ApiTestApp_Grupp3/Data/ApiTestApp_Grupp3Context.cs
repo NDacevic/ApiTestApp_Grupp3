@@ -55,5 +55,7 @@ namespace ApiTestApp_Grupp3.Data
         public DbSet<ApiTestApp_Grupp3.Models.TestResult> TestResult { get; set; }
 
         public DbSet<ApiTestApp_Grupp3.Models.StudentQuestionAnswer> StudentQuestionAnswer { get; set; }
+
+        public DbSet<ApiTestApp_Grupp3.Models.Course> Course { get; set; }
     }
 }

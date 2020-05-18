@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,5 +32,10 @@ namespace ApiTestApp_Grupp3.Models
 
         public List<StudentQuestionAnswer> StudentQuestionAnswer { get; set; } //--> Mellantabell
 
+
+        //This exists so that the API can do the work of finding the correct FK when a new question is posted
+        //instead of having an extra class on the client side and downloading the Courses as objects
+        [NotMapped]
+        public string CourseName { get; set; }
     }
 }
