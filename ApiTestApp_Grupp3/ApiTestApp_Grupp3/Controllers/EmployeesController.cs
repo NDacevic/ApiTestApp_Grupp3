@@ -25,7 +25,9 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
         {
-            return await _context.Employee.ToListAsync();
+            //This is currently used for testing. Change this when API connects successfully.
+            return Ok("Api works. Wohoo");
+            //return await _context.Employee.ToListAsync();
         }
 
         // GET: api/Employees/5
