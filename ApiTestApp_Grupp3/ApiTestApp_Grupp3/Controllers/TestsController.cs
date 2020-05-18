@@ -84,6 +84,8 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpPost]
         public async Task<ActionResult<Test>> PostTest(Test test)
         {
+            test.Course = await _context.Course.Where(x => x.CourseName == test.CourseName).Select(x => x).FirstOrDefaultAsync();
+
             _context.Test.Add(test);
             await _context.SaveChangesAsync();
 
