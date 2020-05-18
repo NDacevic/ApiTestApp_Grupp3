@@ -83,7 +83,7 @@ namespace ApiTestApp_Grupp3.Controllers
             _context.Question.Add(question);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetQuestion", new { id = question.QuestionId }, question);
+            return Ok(question);
         }
 
         // DELETE: api/Questions/5
