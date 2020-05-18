@@ -25,7 +25,8 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Test>>> GetTest()
         {
-            return await _context.Test.ToListAsync();
+            var result=await _context.Test.ToListAsync();
+            return Ok(result);
         }
 
         // GET: api/Tests/5
