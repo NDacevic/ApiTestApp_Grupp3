@@ -84,11 +84,25 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpPost]
         public async Task<ActionResult<Test>> PostTest(Test test)
         {
+
+            _context.Database.BeginTransaction();
             test.Course = await _context.Course.Where(x => x.CourseName == test.CourseName).Select(x => x).FirstOrDefaultAsync();
 
             _context.Test.Add(test);
             await _context.SaveChangesAsync();
 
+            foreach(Question tq in test.questions)
+            {
+                TestQuestion tempTQ = new TestQuestion();
+                tempTQ.TestId = test.TestId;
+                tempTQ.QuestionId = tq.QuestionId;
+                _context.TestQuestion.Add(tempTQ);
+            }
+            
+
+                await _context.SaveChangesAsync();
+
+            _context.Database.CommitTransaction();
             return CreatedAtAction("GetTest", new { id = test.TestId }, test);
         }
 
