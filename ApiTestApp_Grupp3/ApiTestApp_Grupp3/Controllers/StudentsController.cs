@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApiTestApp_Grupp3.Data;
 using ApiTestApp_Grupp3.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ApiTestApp_Grupp3.Controllers
 {
@@ -23,9 +24,39 @@ namespace ApiTestApp_Grupp3.Controllers
 
         // GET: api/Students
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
+        public async Task<ActionResult> GetStudent()
         {
-            return await _context.Student.ToListAsync();
+
+            List<Student> studentList = new List<Student>();
+            List<Test> tempTestList = new List<Test>();
+            List<int> testIdList = new List<int>();
+
+            studentList = await _context.Student.Select(x => x).ToListAsync();
+
+            foreach (var student in studentList)
+            {
+                testIdList = await _context.StudentQuestionAnswer.Where(x => x.StudentId == 1).Select(x => x.TestId).ToListAsync();
+                testIdList = testIdList.Select(x => x).Distinct().ToList();
+                
+                student.Tests = new List<Test>();
+
+                foreach (var testId in testIdList)
+                    student.Tests.Add(_context.Test.Where(test => test.TestId == testId).Select(test => test).FirstOrDefault());
+            }
+
+            foreach(var student in studentList)
+            {
+                foreach(var test in student.Tests)
+                {
+                    var questionList = await _context.StudentQuestionAnswer.Where(x => x.StudentId == student.StudentId && x.TestId == test.TestId).Select(x => x.QuestionId).ToListAsync();
+                    test.Questions = new List<Question>();
+
+                    foreach (var q in questionList)
+                        test.Questions.Add(await _context.Question.Where(x => x.QuestionId == q).Select(x => x).FirstOrDefaultAsync());
+                }
+            }
+
+            return Ok(studentList);
         }
 
         // GET: api/Students/5
