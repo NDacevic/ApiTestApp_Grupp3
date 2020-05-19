@@ -29,17 +29,22 @@ namespace ApiTestApp_Grupp3.Controllers
         }
 
         // GET: api/Questions/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Question>> GetQuestion(int id)
+        [HttpGet("{course}")] //Get all questions on the given coursename
+        public async Task<ActionResult<IEnumerable<Question>>> GetQuestion(string course)
         {
-            var question = await _context.Question.FindAsync(id);
-
-            if (question == null)
+            List<Question> tempList = new List<Question>();
+            int courseId=0;
+            var q =  _context.Course.Where(i =>i.CourseName.Contains(course));
+            foreach (Course f in q)
             {
-                return NotFound();
+                courseId = f.CourseId;
             }
-
-            return question;
+            var studentList = _context.Question.Where(s => s.Course.CourseId == courseId).ToList();
+                foreach(Question courseName in studentList)
+            {
+                courseName.CourseName = course;
+            }
+            return studentList;
         }
 
         // PUT: api/Questions/5
