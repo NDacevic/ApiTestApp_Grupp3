@@ -27,6 +27,9 @@ namespace ApiTestApp_Grupp3.Models
 
        public List<TestResult> TestResult { get; set; } // --> Mellantabell
 
+        [NotMapped]
+        public string CourseName { get; set; }
+
 
 
 
