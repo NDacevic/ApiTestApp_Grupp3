@@ -91,7 +91,7 @@ namespace ApiTestApp_Grupp3.Controllers
             _context.Test.Add(test);
             await _context.SaveChangesAsync();
 
-            foreach(Question tq in test.questions)
+            foreach(Question tq in test.Questions)
             {
                 TestQuestion tempTQ = new TestQuestion();
                 tempTQ.TestId = test.TestId;
