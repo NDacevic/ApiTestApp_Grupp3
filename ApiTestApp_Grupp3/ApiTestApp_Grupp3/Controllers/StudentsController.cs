@@ -44,7 +44,9 @@ namespace ApiTestApp_Grupp3.Controllers
 
                 foreach (var testId in testIdList)
                 {
-                    var tempTest = _context.Test.Where(test => test.TestId == testId).Select(test => test).FirstOrDefault();
+                    var tempTest = _context.Test.Include(x => x.Course).Where(test => test.TestId == testId).Select(test => test).FirstOrDefault();
+                    tempTest.CourseName = tempTest.Course.CourseName;
+
                     string jsonString = JsonConvert.SerializeObject(tempTest);
                     student.Tests.Add(JsonConvert.DeserializeObject<Test>(jsonString));
                 }
