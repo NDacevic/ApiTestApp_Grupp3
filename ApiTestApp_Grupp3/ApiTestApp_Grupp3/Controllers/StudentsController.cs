@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using ApiTestApp_Grupp3.Data;
 using ApiTestApp_Grupp3.Models;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.EntityFrameworkCore.Internal;
+using Newtonsoft.Json;
+using System.Security.Cryptography.Xml;
 
 namespace ApiTestApp_Grupp3.Controllers
 {
@@ -26,7 +29,6 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpGet]
         public async Task<ActionResult> GetStudent()
         {
-
             List<Student> studentList = new List<Student>();
             List<Test> tempTestList = new List<Test>();
             List<int> testIdList = new List<int>();
@@ -41,7 +43,11 @@ namespace ApiTestApp_Grupp3.Controllers
                 student.Tests = new List<Test>();
 
                 foreach (var testId in testIdList)
-                    student.Tests.Add(_context.Test.Where(test => test.TestId == testId).Select(test => test).FirstOrDefault());
+                {
+                    var tempTest = _context.Test.Where(test => test.TestId == testId).Select(test => test).FirstOrDefault();
+                    string jsonString = JsonConvert.SerializeObject(tempTest);
+                    student.Tests.Add(JsonConvert.DeserializeObject<Test>(jsonString));
+                }
             }
 
             foreach(var student in studentList)
@@ -52,7 +58,19 @@ namespace ApiTestApp_Grupp3.Controllers
                     test.Questions = new List<Question>();
 
                     foreach (var q in questionList)
-                        test.Questions.Add(await _context.Question.Where(x => x.QuestionId == q).Select(x => x).FirstOrDefaultAsync());
+                    {
+                        var tempQuestion = await _context.Question.Where(x => x.QuestionId == q).Select(x => x).FirstOrDefaultAsync();
+                        
+                        tempQuestion.Answer = await _context.StudentQuestionAnswer.Where(x =>
+                            x.StudentId == student.StudentId && 
+                            x.TestId == test.TestId && 
+                            x.QuestionId == tempQuestion.QuestionId)
+                            .Select(x => x.Answer)
+                            .FirstOrDefaultAsync();
+                        
+                        var jsonString = JsonConvert.SerializeObject(tempQuestion);
+                        test.Questions.Add(JsonConvert.DeserializeObject<Question>(jsonString));
+                    }
                 }
             }
 
