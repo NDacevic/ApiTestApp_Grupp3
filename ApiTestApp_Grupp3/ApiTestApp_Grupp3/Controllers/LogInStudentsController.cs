@@ -29,17 +29,22 @@ namespace ApiTestApp_Grupp3.Controllers
         }
 
         // GET: api/LogInStudents/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(int id)
+        /// <summary>
+        /// Returns student with matching email to be able to log in 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpGet("{email}")]
+        public async Task<ActionResult<Student>> GetStudent(string email)
         {
-            var student = await _context.Student.FindAsync(id);
+            var student = await _context.Student.Where(x => x.Email == email).Select(x => x).ToListAsync();
 
             if (student == null)
             {
                 return NotFound();
             }
 
-            return student;
+            return Ok(student);
         }
 
         // PUT: api/LogInStudents/5
