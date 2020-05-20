@@ -98,12 +98,12 @@ namespace ApiTestApp_Grupp3.Controllers
                 tempTQ.QuestionId = tq.QuestionId;
                 _context.TestQuestion.Add(tempTQ);
             }
-            
-
                 await _context.SaveChangesAsync();
 
             _context.Database.CommitTransaction();
-            return CreatedAtAction("GetTest", new { id = test.TestId }, test);
+
+            return Ok();
+            //return CreatedAtAction("GetTest", new { id = test.TestId }, test);
         }
 
         // DELETE: api/Tests/5
