@@ -40,6 +40,5 @@ namespace ApiTestApp_Grupp3.Models
 
         [NotMapped]
         public string Answer { get; set; } //Used when returning the question and answer of a specific student to the client
-
     }
 }
