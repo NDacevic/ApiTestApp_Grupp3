@@ -37,7 +37,7 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpGet("{email}")]
         public async Task<ActionResult<Student>> GetStudent(string email)
         {
-            var student = await _context.Student.Where(x => x.Email == email).Select(x => x).ToListAsync();
+            var student = await _context.Student.Where(s => s.Email == email).Select(s => s).FirstOrDefaultAsync();
 
             if (student == null)
             {

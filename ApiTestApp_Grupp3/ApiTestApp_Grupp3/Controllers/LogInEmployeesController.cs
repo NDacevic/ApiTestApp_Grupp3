@@ -27,19 +27,25 @@ namespace ApiTestApp_Grupp3.Controllers
         {
             return await _context.Employee.ToListAsync();
         }
+        /// <summary>
+        /// Returns the employee with matching email to be able to log in
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
 
         // GET: api/LogInEmployees/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        [HttpGet("{email}")]
+        public async Task<ActionResult<Employee>> GetEmployee(string email)
         {
-            var employee = await _context.Employee.FindAsync(id);
+            var employee = await _context.Employee.Where(e => e.Email == email).Select(e => e).FirstOrDefaultAsync();
 
             if (employee == null)
             {
                 return NotFound();
             }
 
-            return employee;
+            return Ok(employee);
+
         }
 
         // PUT: api/LogInEmployees/5
