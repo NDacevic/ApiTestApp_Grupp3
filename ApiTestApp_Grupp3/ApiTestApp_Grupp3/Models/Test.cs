@@ -17,7 +17,7 @@ namespace ApiTestApp_Grupp3.Models
        public bool IsGraded { get; set; }
 
        [NotMapped]
-       public List<Question> questions { get; set; } //--> Lista med frågor.
+       public List<Question> Questions { get; set; } //--> Lista med frågor.
 
        public Course Course { get; set; } // ---> FK till Course
 
@@ -27,11 +27,7 @@ namespace ApiTestApp_Grupp3.Models
 
        public List<TestResult> TestResult { get; set; } // --> Mellantabell
 
-        [NotMapped]
-        public string CourseName { get; set; }
-
-
-
-
+       [NotMapped]
+       public string CourseName { get; set; }
     }
 }

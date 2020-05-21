@@ -36,7 +36,9 @@ namespace ApiTestApp_Grupp3.Models
         //This exists so that the API can do the work of finding the correct FK when a new question is posted
         //instead of having an extra class on the client side and downloading the Courses as objects
         [NotMapped]
-        public string CourseName { get; set; }
+        public string CourseName { get; set; } 
 
+        [NotMapped]
+        public string Answer { get; set; } //Used when returning the question and answer of a specific student to the client
     }
 }
