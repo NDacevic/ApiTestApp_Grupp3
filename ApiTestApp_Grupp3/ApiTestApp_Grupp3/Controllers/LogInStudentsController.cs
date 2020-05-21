@@ -23,9 +23,9 @@ namespace ApiTestApp_Grupp3.Controllers
 
         // GET: api/LogInStudents
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
+        public ActionResult GetStudent()
         {
-            return await _context.Student.ToListAsync();
+            return NotFound();
         }
 
         // GET: api/LogInStudents/5
@@ -51,60 +51,28 @@ namespace ApiTestApp_Grupp3.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, Student student)
+        public ActionResult PutStudent(int id, Student student)
         {
-            if (id != student.StudentId)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(student).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
 
         // POST: api/LogInStudents
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
+        public ActionResult PostStudent(Student student)
         {
-            _context.Student.Add(student);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStudent", new { id = student.StudentId }, student);
+            return NotFound();
         }
 
         // DELETE: api/LogInStudents/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Student>> DeleteStudent(int id)
+        public ActionResult DeleteStudent(int id)
         {
-            var student = await _context.Student.FindAsync(id);
-            if (student == null)
-            {
-                return NotFound();
-            }
 
-            _context.Student.Remove(student);
-            await _context.SaveChangesAsync();
-
-            return student;
+            return NotFound();
         }
 
         private bool StudentExists(int id)

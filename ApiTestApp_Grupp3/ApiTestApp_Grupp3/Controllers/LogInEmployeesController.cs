@@ -23,9 +23,9 @@ namespace ApiTestApp_Grupp3.Controllers
 
         // GET: api/LogInEmployees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
+        public ActionResult GetEmployee()
         {
-            return await _context.Employee.ToListAsync();
+            return NotFound();
         }
         /// <summary>
         /// Returns the employee with matching email to be able to log in
@@ -52,60 +52,27 @@ namespace ApiTestApp_Grupp3.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        public IActionResult PutEmployee(int id, Employee employee)
         {
-            if (id != employee.EmployeeId)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(employee).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EmployeeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
 
         // POST: api/LogInEmployees
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public ActionResult PostEmployee(Employee employee)
         {
-            _context.Employee.Add(employee);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
+            return NotFound();
         }
 
         // DELETE: api/LogInEmployees/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Employee>> DeleteEmployee(int id)
-        {
-            var employee = await _context.Employee.FindAsync(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
+        public ActionResult DeleteEmployee(int id)
+        { 
 
-            _context.Employee.Remove(employee);
-            await _context.SaveChangesAsync();
-
-            return employee;
+            return NotFound();
         }
 
         private bool EmployeeExists(int id)
