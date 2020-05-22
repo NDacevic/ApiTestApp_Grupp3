@@ -46,14 +46,22 @@ namespace ApiTestApp_Grupp3.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut]
-        public async Task<IActionResult> PutStudentQuestionAnswer(StudentQuestionAnswer updatedSqa)
+        public async Task<IActionResult> PutStudentQuestionAnswer(List<StudentQuestionAnswer> updatedSqaList)
         {
-            if (!_context.StudentQuestionAnswer.Any(sqa => sqa.QuestionId == updatedSqa.QuestionId && sqa.StudentId == updatedSqa.StudentId && sqa.TestId == updatedSqa.TestId))
+            bool allQuestionsExist = true;
+            foreach (var updatedSqa in updatedSqaList)
             {
-                return BadRequest();
+                if (!_context.StudentQuestionAnswer.Any(sqa => sqa.QuestionId == updatedSqa.QuestionId && sqa.StudentId == updatedSqa.StudentId && sqa.TestId == updatedSqa.TestId))
+                {
+                    allQuestionsExist = false;
+                }
             }
 
-            _context.Entry(updatedSqa).State = EntityState.Modified;
+            if(!allQuestionsExist)
+                return BadRequest();
+
+            foreach( var updatedSqa in updatedSqaList)
+                _context.Entry(updatedSqa).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
 
