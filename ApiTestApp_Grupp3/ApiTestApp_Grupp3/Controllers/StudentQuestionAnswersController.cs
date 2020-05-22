@@ -45,33 +45,19 @@ namespace ApiTestApp_Grupp3.Controllers
         // PUT: api/StudentQuestionAnswers/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudentQuestionAnswer(int id, StudentQuestionAnswer studentQuestionAnswer)
+        [HttpPut]
+        public async Task<IActionResult> PutStudentQuestionAnswer(StudentQuestionAnswer sqa)
         {
-            if (id != studentQuestionAnswer.StudentId)
+            if (!_context.StudentQuestionAnswer.Any(x => x.QuestionId == sqa.QuestionId && x.StudentId == sqa.StudentId && x.TestId == sqa.TestId))
             {
                 return BadRequest();
             }
 
-            _context.Entry(studentQuestionAnswer).State = EntityState.Modified;
+            _context.Entry(sqa).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentQuestionAnswerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/StudentQuestionAnswers
