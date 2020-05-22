@@ -48,7 +48,10 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpPut]
         public async Task<IActionResult> PutStudentQuestionAnswer(List<StudentQuestionAnswer> updatedSqaList)
         {
+            //Create a bool where we store if all the questions have been posted correctly.
             bool allQuestionsExist = true;
+            
+            //Go through all the questions and check if they are valid to be changed.
             foreach (var updatedSqa in updatedSqaList)
             {
                 if (!_context.StudentQuestionAnswer.Any(sqa => sqa.QuestionId == updatedSqa.QuestionId && sqa.StudentId == updatedSqa.StudentId && sqa.TestId == updatedSqa.TestId))
@@ -56,13 +59,16 @@ namespace ApiTestApp_Grupp3.Controllers
                     allQuestionsExist = false;
                 }
             }
-
+            
+            //if one question is bad then abort the whole process
             if(!allQuestionsExist)
                 return BadRequest();
-
+            
+            //if all is good then go ahead and update all the entries
             foreach( var updatedSqa in updatedSqaList)
                 _context.Entry(updatedSqa).State = EntityState.Modified;
 
+            //save and return
             await _context.SaveChangesAsync();
 
             return Ok();
