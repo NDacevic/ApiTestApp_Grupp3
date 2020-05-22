@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,5 +21,7 @@ namespace ApiTestApp_Grupp3.Models
         public string Password { get; set; }
         public int ClassId { get; set; }
         public EmployeeRole EmployeeRole { get; set; }
+        [NotMapped]
+        public Role Role { get; set; }
     }
 }
