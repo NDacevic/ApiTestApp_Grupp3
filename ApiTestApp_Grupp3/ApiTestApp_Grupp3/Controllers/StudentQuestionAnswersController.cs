@@ -80,8 +80,7 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpPost]
         public async Task<ActionResult<StudentQuestionAnswer>> PostStudentQuestionAnswer(List<StudentQuestionAnswer> studentQuestionAnswers)
         {
-            //Todo: Get correct Student, Test, Question objects using LINQ
-            
+            //Lopp through list of objects to save            
             foreach (StudentQuestionAnswer studentQuestionAnswer in studentQuestionAnswers)
             {
                 _context.StudentQuestionAnswer.Add(studentQuestionAnswer);
@@ -89,6 +88,7 @@ namespace ApiTestApp_Grupp3.Controllers
 
             try
             {
+                //save changes to database
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
