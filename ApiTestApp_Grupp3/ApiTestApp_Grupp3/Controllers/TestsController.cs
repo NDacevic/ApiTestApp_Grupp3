@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApiTestApp_Grupp3.Data;
 using ApiTestApp_Grupp3.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace ApiTestApp_Grupp3.Controllers
 {
@@ -49,33 +50,27 @@ namespace ApiTestApp_Grupp3.Controllers
         // PUT: api/Tests/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTest(int id, Test test)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchTest(int id, [FromBody] JsonPatchDocument<Test> jsonPatchTest)
         {
-            if (id != test.TestId)
-            {
-                return BadRequest();
-            }
+            Test updateTest = await _context.Test.FirstOrDefaultAsync(x => x.TestId == id);
 
-            _context.Entry(test).State = EntityState.Modified;
+            if (updateTest == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TestExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            jsonPatchTest.ApplyTo(updateTest, ModelState);
 
-            return NoContent();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!TryValidateModel(updateTest))
+                return BadRequest(ModelState);
+
+            _context.Update(updateTest);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // POST: api/Tests

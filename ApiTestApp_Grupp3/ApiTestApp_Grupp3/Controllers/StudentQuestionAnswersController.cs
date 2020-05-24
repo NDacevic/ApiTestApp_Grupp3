@@ -45,59 +45,58 @@ namespace ApiTestApp_Grupp3.Controllers
         // PUT: api/StudentQuestionAnswers/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudentQuestionAnswer(int id, StudentQuestionAnswer studentQuestionAnswer)
+        [HttpPut]
+        public async Task<IActionResult> PutStudentQuestionAnswer(List<StudentQuestionAnswer> updatedSqaList)
         {
-            if (id != studentQuestionAnswer.StudentId)
+            //Create a bool where we store if all the questions have been posted correctly.
+            bool allQuestionsExist = true;
+            
+            //Go through all the questions and check if they are valid to be changed.
+            foreach (var updatedSqa in updatedSqaList)
             {
+                if (!_context.StudentQuestionAnswer.Any(sqa => sqa.QuestionId == updatedSqa.QuestionId && sqa.StudentId == updatedSqa.StudentId && sqa.TestId == updatedSqa.TestId))
+                {
+                    allQuestionsExist = false;
+                }
+            }
+            
+            //if one question is bad then abort the whole process
+            if(!allQuestionsExist)
                 return BadRequest();
-            }
+            
+            //if all is good then go ahead and update all the entries
+            foreach( var updatedSqa in updatedSqaList)
+                _context.Entry(updatedSqa).State = EntityState.Modified;
 
-            _context.Entry(studentQuestionAnswer).State = EntityState.Modified;
+            //save and return
+            await _context.SaveChangesAsync();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentQuestionAnswerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/StudentQuestionAnswers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<StudentQuestionAnswer>> PostStudentQuestionAnswer(StudentQuestionAnswer studentQuestionAnswer)
+        public async Task<ActionResult<StudentQuestionAnswer>> PostStudentQuestionAnswer(List<StudentQuestionAnswer> studentQuestionAnswers)
         {
-            _context.StudentQuestionAnswer.Add(studentQuestionAnswer);
+            //Lopp through list of objects to save            
+            foreach (StudentQuestionAnswer studentQuestionAnswer in studentQuestionAnswers)
+            {
+                _context.StudentQuestionAnswer.Add(studentQuestionAnswer);
+            }
+
             try
             {
+                //save changes to database
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
-            {
-                if (StudentQuestionAnswerExists(studentQuestionAnswer.StudentId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+            { 
+                return Conflict();
             }
 
-            return CreatedAtAction("GetStudentQuestionAnswer", new { id = studentQuestionAnswer.StudentId }, studentQuestionAnswer);
+            return CreatedAtAction("GetStudentQuestionAnswer", studentQuestionAnswers);
         }
 
         // DELETE: api/StudentQuestionAnswers/5
