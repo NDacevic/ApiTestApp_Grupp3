@@ -37,8 +37,5 @@ namespace ApiTestApp_Grupp3.Models
         //instead of having an extra class on the client side and downloading the Courses as objects
         [NotMapped]
         public string CourseName { get; set; } 
-
-        [NotMapped]
-        public string Answer { get; set; } //Used when returning the question and answer of a specific student to the client
     }
 }
