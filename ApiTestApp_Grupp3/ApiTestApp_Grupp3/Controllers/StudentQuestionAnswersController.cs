@@ -78,26 +78,25 @@ namespace ApiTestApp_Grupp3.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<StudentQuestionAnswer>> PostStudentQuestionAnswer(StudentQuestionAnswer studentQuestionAnswer)
+        public async Task<ActionResult<StudentQuestionAnswer>> PostStudentQuestionAnswer(List<StudentQuestionAnswer> studentQuestionAnswers)
         {
-            _context.StudentQuestionAnswer.Add(studentQuestionAnswer);
+            //Lopp through list of objects to save            
+            foreach (StudentQuestionAnswer studentQuestionAnswer in studentQuestionAnswers)
+            {
+                _context.StudentQuestionAnswer.Add(studentQuestionAnswer);
+            }
+
             try
             {
+                //save changes to database
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
-            {
-                if (StudentQuestionAnswerExists(studentQuestionAnswer.StudentId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+            { 
+                return Conflict();
             }
 
-            return CreatedAtAction("GetStudentQuestionAnswer", new { id = studentQuestionAnswer.StudentId }, studentQuestionAnswer);
+            return CreatedAtAction("GetStudentQuestionAnswer", studentQuestionAnswers);
         }
 
         // DELETE: api/StudentQuestionAnswers/5
