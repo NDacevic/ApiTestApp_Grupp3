@@ -82,11 +82,13 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
+            employee.EmployeeRole = await _context.EmployeeRole.Where(x => x.EmployeeId == employee.EmployeeId).Select(x => x).FirstOrDefaultAsync();
             _context.Employee.Add(employee);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
+            return Ok(employee.EmployeeId);
         }
+
 
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
