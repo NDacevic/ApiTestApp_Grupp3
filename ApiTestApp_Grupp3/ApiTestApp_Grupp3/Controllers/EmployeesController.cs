@@ -86,7 +86,7 @@ namespace ApiTestApp_Grupp3.Controllers
             _context.Employee.Add(employee);
             await _context.SaveChangesAsync();
 
-            return Ok(employee.EmployeeId);
+            return Ok();
         }
 
 

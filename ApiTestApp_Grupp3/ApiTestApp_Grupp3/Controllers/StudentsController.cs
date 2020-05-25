@@ -140,7 +140,7 @@ namespace ApiTestApp_Grupp3.Controllers
             _context.Student.Add(student);
             await _context.SaveChangesAsync();
 
-            return Ok(student.StudentId);
+            return Ok();
         }
 
         // DELETE: api/Students/5
