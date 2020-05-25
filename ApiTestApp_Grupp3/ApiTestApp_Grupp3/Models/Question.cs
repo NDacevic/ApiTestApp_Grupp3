@@ -39,6 +39,7 @@ namespace ApiTestApp_Grupp3.Models
         public string CourseName { get; set; } 
 
         [NotMapped]
-        public string Answer { get; set; } //Used when returning the question and answer of a specific student to the client
+        public StudentQuestionAnswer QuestionAnswer { get; set; } //Object used for returning the answer & correction information for a specific student and test to the client.
+
     }
 }

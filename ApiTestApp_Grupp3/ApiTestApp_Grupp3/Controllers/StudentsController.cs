@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using System.Security.Cryptography.Xml;
+using System.Net.Http.Headers;
 
 namespace ApiTestApp_Grupp3.Controllers
 {
@@ -62,12 +63,17 @@ namespace ApiTestApp_Grupp3.Controllers
                     foreach (var q in questionList)
                     {
                         var tempQuestion = await _context.Question.Where(x => x.QuestionId == q).Select(x => x).FirstOrDefaultAsync();
-                        
-                        tempQuestion.Answer = await _context.StudentQuestionAnswer.Where(x =>
-                            x.StudentId == student.StudentId && 
-                            x.TestId == test.TestId && 
+
+                        tempQuestion.QuestionAnswer = await _context.StudentQuestionAnswer.Where(x =>
+                            x.StudentId == student.StudentId &&
+                            x.TestId == test.TestId &&
                             x.QuestionId == tempQuestion.QuestionId)
-                            .Select(x => x.Answer)
+                            .Select(qa => new StudentQuestionAnswer {
+                                StudentId = qa.StudentId,
+                                TestId = qa.TestId,
+                                QuestionId = qa.QuestionId,
+                                Answer = qa.Answer,
+                                IsCorrect = qa.IsCorrect})
                             .FirstOrDefaultAsync();
                         
                         var jsonString = JsonConvert.SerializeObject(tempQuestion);

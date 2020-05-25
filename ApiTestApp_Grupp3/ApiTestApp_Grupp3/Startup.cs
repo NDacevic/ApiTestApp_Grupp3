@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 using ApiTestApp_Grupp3.Data;
 
 namespace ApiTestApp_Grupp3
@@ -31,7 +31,7 @@ namespace ApiTestApp_Grupp3
             services.AddDbContextPool<ApiTestApp_Grupp3Context>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("MainDBConnection")));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddMvc();
         }
 
