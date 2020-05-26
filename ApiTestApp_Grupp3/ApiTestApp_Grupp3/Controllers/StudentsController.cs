@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using System.Security.Cryptography.Xml;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace ApiTestApp_Grupp3.Controllers
 {
@@ -102,33 +103,27 @@ namespace ApiTestApp_Grupp3.Controllers
         // PUT: api/Students/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, Student student)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PutStudent(int id, [FromBody] JsonPatchDocument<Student> jsonPatchStudent)
         {
-            if (id != student.StudentId)
-            {
-                return BadRequest();
-            }
+            Student updateStudent = await _context.Student.FirstOrDefaultAsync(x => x.StudentId == id);
 
-            _context.Entry(student).State = EntityState.Modified;
+            if (updateStudent == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            jsonPatchStudent.ApplyTo(updateStudent, ModelState);
 
-            return NoContent();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!TryValidateModel(updateStudent))
+                return BadRequest(ModelState);
+
+            _context.Update(updateStudent);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // POST: api/Students
