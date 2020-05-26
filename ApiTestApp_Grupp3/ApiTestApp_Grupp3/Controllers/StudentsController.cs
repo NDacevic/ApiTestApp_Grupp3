@@ -137,10 +137,17 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpPost]
         public async Task<ActionResult<Student>> PostStudent(Student student)
         {
-            _context.Student.Add(student);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Student.Add(student);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return NotFound();
+            }
 
-            return CreatedAtAction("GetStudent", new { id = student.StudentId }, student);
+            return Ok();
         }
 
         // DELETE: api/Students/5

@@ -38,6 +38,7 @@ namespace ApiTestApp_Grupp3.Controllers
         public async Task<ActionResult<Employee>> GetEmployee(string email)
         {
             var employee = await _context.Employee.Where(e => e.Email == email).Select(e => e).FirstOrDefaultAsync();
+            employee.Role = await _context.EmployeeRole.Include(x => x.Role).Where(er => er.EmployeeId == employee.EmployeeId).Select(r => r.Role).FirstOrDefaultAsync();
 
             if (employee == null)
             {
