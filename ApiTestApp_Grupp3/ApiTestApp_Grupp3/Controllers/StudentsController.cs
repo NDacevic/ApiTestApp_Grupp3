@@ -39,7 +39,7 @@ namespace ApiTestApp_Grupp3.Controllers
 
             foreach (var student in studentList)
             {
-                testIdList = await _context.StudentQuestionAnswer.Where(x => x.StudentId == 1).Select(x => x.TestId).ToListAsync();
+                testIdList = await _context.StudentQuestionAnswer.Where(x => x.StudentId == student.StudentId).Select(x => x.TestId).ToListAsync();
                 testIdList = testIdList.Select(x => x).Distinct().ToList();
                 
                 student.Tests = new List<Test>();
