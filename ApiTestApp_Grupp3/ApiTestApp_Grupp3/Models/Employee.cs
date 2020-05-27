@@ -20,7 +20,8 @@ namespace ApiTestApp_Grupp3.Models
         [StringLength(50)]
         public string Password { get; set; }
         public int ClassId { get; set; }
-        public EmployeeRole EmployeeRole { get; set; }
+        public List<EmployeeRole> EmployeeRole { get; set; }
+
         [NotMapped]
         public Role Role { get; set; }
     }
