@@ -82,7 +82,7 @@ namespace ApiTestApp_Grupp3.Controllers
             student.Tests = new List<Test>();
             foreach (var testId in testIdList)
             {
-                var tempTest = await GetCourseForTest(testId);
+                var tempTest = await FindTestandAppendCourse(testId);
 
                 //Before adding the test we make a deep copy by serializing and deserializing
                 string jsonString = JsonConvert.SerializeObject(tempTest);
@@ -97,13 +97,18 @@ namespace ApiTestApp_Grupp3.Controllers
         /// <param name="test"></param>
         private async Task GetQuestionsForTest(Student student, Test test)
         {
-            var questionList = await _context.StudentQuestionAnswer.Where(x => x.StudentId == student.StudentId && x.TestId == test.TestId).Select(x => x.QuestionId).ToListAsync();
+            //compile a list of all the question id's for a specific student and test.
+            var questionIdList = await _context.StudentQuestionAnswer.Where(x => x.StudentId == student.StudentId && x.TestId == test.TestId).Select(x => x.QuestionId).ToListAsync();
+            
+            //initialize the list of questions for a test.
             test.Questions = new List<Question>();
 
-            foreach (var q in questionList)
+            //go through the id's and append question objects to a test
+            foreach (var q in questionIdList)
             {
                 var tempQuestion = await _context.Question.Where(x => x.QuestionId == q).Select(x => x).FirstOrDefaultAsync();
 
+                //Append the students answer to the question object
                 tempQuestion.QuestionAnswer = await _context.StudentQuestionAnswer.Where(x =>
                     x.StudentId == student.StudentId &&
                     x.TestId == test.TestId &&
@@ -118,6 +123,7 @@ namespace ApiTestApp_Grupp3.Controllers
                     })
                     .FirstOrDefaultAsync();
 
+                //make a deep copy through serializing and deserializing before adding to the question list
                 var jsonString = JsonConvert.SerializeObject(tempQuestion);
                 test.Questions.Add(JsonConvert.DeserializeObject<Question>(jsonString));
             }
@@ -128,9 +134,12 @@ namespace ApiTestApp_Grupp3.Controllers
         /// </summary>
         /// <param name="testId"></param>
         /// <returns></returns>
-        private async Task<Test> GetCourseForTest(int testId)
+        private async Task<Test> FindTestandAppendCourse(int testId)
         {
+            //Find a test with the course object included
             var test = await _context.Test.Include(x => x.Course).Where(test => test.TestId == testId).Select(test => test).FirstOrDefaultAsync();
+            //Take the course name and append it to the CourseName property in the test.
+            //This makes it slightly easier parsing the information on the client side
             test.CourseName = test.Course.CourseName;
 
             return test;
