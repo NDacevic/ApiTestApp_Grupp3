@@ -4,14 +4,16 @@ using ApiTestApp_Grupp3.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApiTestApp_Grupp3.Migrations
 {
     [DbContext(typeof(ApiTestApp_Grupp3Context))]
-    partial class ApiTestApp_Grupp3ContextModelSnapshot : ModelSnapshot
+    [Migration("20200527071125_2.0")]
+    partial class _20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,7 +83,11 @@ namespace ApiTestApp_Grupp3.Migrations
 
                     b.HasKey("EmployeeId", "RoleId");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
+                    b.HasIndex("RoleId")
+                        .IsUnique();
 
                     b.ToTable("EmployeeRole");
                 });
@@ -278,14 +284,14 @@ namespace ApiTestApp_Grupp3.Migrations
             modelBuilder.Entity("ApiTestApp_Grupp3.Models.EmployeeRole", b =>
                 {
                     b.HasOne("ApiTestApp_Grupp3.Models.Employee", "Employee")
-                        .WithMany("EmployeeRole")
-                        .HasForeignKey("EmployeeId")
+                        .WithOne("EmployeeRole")
+                        .HasForeignKey("ApiTestApp_Grupp3.Models.EmployeeRole", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ApiTestApp_Grupp3.Models.Role", "Role")
-                        .WithMany("EmployeeRole")
-                        .HasForeignKey("RoleId")
+                        .WithOne("EmployeeRole")
+                        .HasForeignKey("ApiTestApp_Grupp3.Models.EmployeeRole", "RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

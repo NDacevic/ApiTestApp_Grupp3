@@ -4,14 +4,16 @@ using ApiTestApp_Grupp3.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApiTestApp_Grupp3.Migrations
 {
     [DbContext(typeof(ApiTestApp_Grupp3Context))]
-    partial class ApiTestApp_Grupp3ContextModelSnapshot : ModelSnapshot
+    [Migration("20200527150732_2.1")]
+    partial class _21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
