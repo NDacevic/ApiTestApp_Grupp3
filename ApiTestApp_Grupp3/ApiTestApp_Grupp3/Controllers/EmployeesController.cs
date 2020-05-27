@@ -84,13 +84,20 @@ namespace ApiTestApp_Grupp3.Controllers
         {
             try
             {
+                _context.Database.BeginTransaction();
                 _context.Employee.Add(employee);
-                //_context.EmployeeRole.Add(employee.EmployeeRole);
                 await _context.SaveChangesAsync();
+                
+                int id = await _context.Role.Where(x => x.RoleName == employee.Role.RoleName).Select(x => x.RoleId).FirstOrDefaultAsync();
+                _context.EmployeeRole.Add(new EmployeeRole() { EmployeeId = employee.EmployeeId, RoleId = id });
+                await _context.SaveChangesAsync();
+                _context.Database.CommitTransaction();
+                
             }
             catch
             {
-                return NotFound();
+                _context.Database.RollbackTransaction();
+                return BadRequest();
             }
 
             return Ok();
