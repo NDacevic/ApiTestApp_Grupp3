@@ -79,20 +79,16 @@ namespace ApiTestApp_Grupp3.Controllers
         {
             try
             {
-<<<<<<< HEAD
-                _context.Employee.Add(employee);
+                //Adding the new employee to Employee table
+               _context.Employee.Add(employee);
                 await _context.SaveChangesAsync();
 
+                //Finding the matching RoleId based on the RoleName in employee 
                 int id = await _context.Role.Where(x => x.RoleName == employee.Role.RoleName).Select(x => x.RoleId).FirstOrDefaultAsync();
+                //Adding the EmployeeID and RoleId to the EmployeeRole table 
                 _context.EmployeeRole.Add(new EmployeeRole() { EmployeeId = employee.EmployeeId, RoleId = id });
                 await _context.SaveChangesAsync();
 
-=======
-                //employee.EmployeeRole = await _context.EmployeeRole.Where(x => x.EmployeeId == employee.EmployeeId).Select(x => x).FirstOrDefaultAsync();
-                //_context.Employee.Add(employee);
-                //_context.EmployeeRole.Add(employee.EmployeeRole);
-                //await _context.SaveChangesAsync();
->>>>>>> master
             }
             catch
             {
