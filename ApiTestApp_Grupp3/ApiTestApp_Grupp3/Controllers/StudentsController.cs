@@ -31,57 +31,7 @@ namespace ApiTestApp_Grupp3.Controllers
         [HttpGet]
         public async Task<ActionResult> GetStudent()
         {
-            List<Student> studentList = new List<Student>();
-            List<Test> tempTestList = new List<Test>();
-            List<int> testIdList = new List<int>();
-
-            studentList = await _context.Student.Select(x => x).ToListAsync();
-
-            foreach (var student in studentList)
-            {
-                testIdList = await _context.StudentQuestionAnswer.Where(x => x.StudentId == student.StudentId).Select(x => x.TestId).ToListAsync();
-                testIdList = testIdList.Select(x => x).Distinct().ToList();
-                
-                student.Tests = new List<Test>();
-
-                foreach (var testId in testIdList)
-                {
-                    var tempTest = _context.Test.Include(x => x.Course).Where(test => test.TestId == testId).Select(test => test).FirstOrDefault();
-                    tempTest.CourseName = tempTest.Course.CourseName;
-
-                    string jsonString = JsonConvert.SerializeObject(tempTest);
-                    student.Tests.Add(JsonConvert.DeserializeObject<Test>(jsonString));
-                }
-            }
-
-            foreach(var student in studentList)
-            {
-                foreach(var test in student.Tests)
-                {
-                    var questionList = await _context.StudentQuestionAnswer.Where(x => x.StudentId == student.StudentId && x.TestId == test.TestId).Select(x => x.QuestionId).ToListAsync();
-                    test.Questions = new List<Question>();
-
-                    foreach (var q in questionList)
-                    {
-                        var tempQuestion = await _context.Question.Where(x => x.QuestionId == q).Select(x => x).FirstOrDefaultAsync();
-
-                        tempQuestion.QuestionAnswer = await _context.StudentQuestionAnswer.Where(x =>
-                            x.StudentId == student.StudentId &&
-                            x.TestId == test.TestId &&
-                            x.QuestionId == tempQuestion.QuestionId)
-                            .Select(qa => new StudentQuestionAnswer {
-                                StudentId = qa.StudentId,
-                                TestId = qa.TestId,
-                                QuestionId = qa.QuestionId,
-                                Answer = qa.Answer,
-                                IsCorrect = qa.IsCorrect})
-                            .FirstOrDefaultAsync();
-                        
-                        var jsonString = JsonConvert.SerializeObject(tempQuestion);
-                        test.Questions.Add(JsonConvert.DeserializeObject<Question>(jsonString));
-                    }
-                }
-            }
+            var studentList = await _context.Student.Select(x => x).ToListAsync();
 
             return Ok(studentList);
         }
