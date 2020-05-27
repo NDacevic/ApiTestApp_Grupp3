@@ -68,6 +68,7 @@ namespace ApiTestApp_Grupp3.Data
         public DbSet<ApiTestApp_Grupp3.Models.TestQuestion> TestQuestion { get; set; }
 
         public DbSet<ApiTestApp_Grupp3.Models.Role> Role { get; set; }
+
         public DbSet<ApiTestApp_Grupp3.Models.EmployeeRole> EmployeeRole { get; set; }
     }
 }
