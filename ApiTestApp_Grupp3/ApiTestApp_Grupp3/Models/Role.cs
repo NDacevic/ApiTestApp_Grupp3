@@ -11,6 +11,6 @@ namespace ApiTestApp_Grupp3.Models
         public int RoleId { get; set; }
         [StringLength(50)]
         public string RoleName { get; set; }
-        public EmployeeRole EmployeeRole { get; set; }
+        public List<EmployeeRole> EmployeeRole { get; set; }
     }
 }

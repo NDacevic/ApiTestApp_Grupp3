@@ -35,12 +35,12 @@ namespace ApiTestApp_Grupp3.Data
                 .HasOne(sqa => sqa.Student)
                 .WithMany(sq => sq.StudentQuestionAnswer)
                 .HasForeignKey(sqa => sqa.StudentId);
-            
+
             modelBuilder.Entity<StudentQuestionAnswer>()
                 .HasOne(sqa => sqa.Test)
                 .WithMany(sq => sq.StudentQuestionAnswer)
                 .HasForeignKey(sqa => sqa.TestId);
-            
+
             modelBuilder.Entity<StudentQuestionAnswer>()
                 .HasOne(sqa => sqa.Question)
                 .WithMany(sq => sq.StudentQuestionAnswer)
@@ -48,7 +48,29 @@ namespace ApiTestApp_Grupp3.Data
 
             modelBuilder.Entity<TestQuestion>().HasKey(tq => new { tq.TestId, tq.QuestionId });
 
+            modelBuilder.Entity<TestQuestion>()
+               .HasOne(tq => tq.Question)
+               .WithMany(q => q.TestQuestion)
+               .HasForeignKey(tq => tq.QuestionId);
+
+            modelBuilder.Entity<TestQuestion>()
+                .HasOne(tq => tq.Test)
+                .WithMany(t => t.TestQuestion)
+                .HasForeignKey(tq => tq.TestId);
+
+
             modelBuilder.Entity<EmployeeRole>().HasKey(er => new { er.EmployeeId, er.RoleId });
+
+            modelBuilder.Entity<EmployeeRole>()
+                .HasOne(er => er.Employee)
+                .WithMany(e => e.EmployeeRole)
+                .HasForeignKey(er => er.EmployeeId);
+
+            modelBuilder.Entity<EmployeeRole>()
+                .HasOne(er => er.Role)
+                .WithMany(e => e.EmployeeRole)
+                .HasForeignKey(er => er.RoleId);
+
         }
 
         public DbSet<ApiTestApp_Grupp3.Models.Test> Test { get; set; }
