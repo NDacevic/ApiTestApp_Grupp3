@@ -84,9 +84,8 @@ namespace ApiTestApp_Grupp3.Controllers
         {
             try
             {
-                employee.EmployeeRole = await _context.EmployeeRole.Where(x => x.EmployeeId == employee.EmployeeId).Select(x => x).FirstOrDefaultAsync();
                 _context.Employee.Add(employee);
-                _context.EmployeeRole.Add(employee.EmployeeRole);
+                //_context.EmployeeRole.Add(employee.EmployeeRole);
                 await _context.SaveChangesAsync();
             }
             catch
