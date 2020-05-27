@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApiTestApp_Grupp3.Data;
 using ApiTestApp_Grupp3.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace ApiTestApp_Grupp3.Controllers
 {
@@ -47,33 +48,27 @@ namespace ApiTestApp_Grupp3.Controllers
         // PUT: api/Employees/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchTest(int id, [FromBody] JsonPatchDocument<Employee> jsonPatchEmployee)
         {
-            if (id != employee.EmployeeId)
-            {
-                return BadRequest();
-            }
+            Employee updateEmployee = await _context.Employee.FirstOrDefaultAsync(x => x.EmployeeId == id);
 
-            _context.Entry(employee).State = EntityState.Modified;
+            if (updateEmployee == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EmployeeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            jsonPatchEmployee.ApplyTo(updateEmployee, ModelState);
 
-            return NoContent();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!TryValidateModel(updateEmployee))
+                return BadRequest(ModelState);
+
+            _context.Update(updateEmployee);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // POST: api/Employees
