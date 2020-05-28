@@ -75,18 +75,42 @@ namespace ApiTestApp_Grupp3.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        //public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        //{
+        //    try
+        //    {
+        //        //employee.EmployeeRole = await _context.EmployeeRole.Where(x => x.EmployeeId == employee.EmployeeId).Select(x => x).FirstOrDefaultAsync();
+        //        //_context.Employee.Add(employee);
+        //        //_context.EmployeeRole.Add(employee.EmployeeRole);
+        //        //await _context.SaveChangesAsync();
+
+        //    }
+        //    catch
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok();
+        //}
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
             try
             {
-                //employee.EmployeeRole = await _context.EmployeeRole.Where(x => x.EmployeeId == employee.EmployeeId).Select(x => x).FirstOrDefaultAsync();
-                //_context.Employee.Add(employee);
-                //_context.EmployeeRole.Add(employee.EmployeeRole);
-                //await _context.SaveChangesAsync();
+                //Adding the new employee to Employee table
+                _context.Employee.Add(employee);
+                await _context.SaveChangesAsync();
+
+                //Finding the matching RoleId based on the RoleName in employee 
+                int id = await _context.Role.Where(x => x.RoleName == employee.Role.RoleName).Select(x => x.RoleId).FirstOrDefaultAsync();
+                //Adding the EmployeeID and RoleId to the EmployeeRole table 
+                _context.EmployeeRole.Add(new EmployeeRole() { EmployeeId = employee.EmployeeId, RoleId = id });
+                await _context.SaveChangesAsync();
+
             }
             catch
             {
-                return NotFound();
+
+                return BadRequest();
             }
 
             return Ok();
