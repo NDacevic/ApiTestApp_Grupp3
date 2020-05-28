@@ -17,7 +17,7 @@ namespace ApiTestApp_Grupp3.Models
         public string LastName { get; set; }
         [StringLength(250)]
         public string Email { get; set; }
-        [StringLength(50)]
+        [StringLength(250)]
         public string Password { get; set; }
         public int ClassId { get; set; }
         public List<EmployeeRole> EmployeeRole { get; set; }
