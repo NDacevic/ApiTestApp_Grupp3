@@ -20,7 +20,7 @@ namespace ApiTestApp_Grupp3.Models
         [StringLength(250)]
         public string Email { get; set; }
 
-        [StringLength(50)]
+        [StringLength(250)]
         public string password { get; set; }
         public int ClassId { get; set; }
 

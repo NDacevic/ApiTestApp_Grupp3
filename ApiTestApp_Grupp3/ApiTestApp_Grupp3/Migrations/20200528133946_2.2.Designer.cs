@@ -4,14 +4,16 @@ using ApiTestApp_Grupp3.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApiTestApp_Grupp3.Migrations
 {
     [DbContext(typeof(ApiTestApp_Grupp3Context))]
-    partial class ApiTestApp_Grupp3ContextModelSnapshot : ModelSnapshot
+    [Migration("20200528133946_2.2")]
+    partial class _22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,8 +65,8 @@ namespace ApiTestApp_Grupp3.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("EmployeeId");
 
