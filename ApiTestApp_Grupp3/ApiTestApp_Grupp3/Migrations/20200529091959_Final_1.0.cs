@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ApiTestApp_Grupp3.Migrations
 {
-    public partial class _10 : Migration
+    public partial class Final_10 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,12 +16,25 @@ namespace ApiTestApp_Grupp3.Migrations
                     FirstName = table.Column<string>(maxLength: 50, nullable: true),
                     LastName = table.Column<string>(maxLength: 50, nullable: true),
                     Email = table.Column<string>(maxLength: 250, nullable: true),
-                    Password = table.Column<string>(maxLength: 50, nullable: true),
+                    Password = table.Column<string>(maxLength: 250, nullable: true),
                     ClassId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employee", x => x.EmployeeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Role",
+                columns: table => new
+                {
+                    RoleId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.RoleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,7 +46,7 @@ namespace ApiTestApp_Grupp3.Migrations
                     FirstName = table.Column<string>(maxLength: 50, nullable: true),
                     LastName = table.Column<string>(maxLength: 50, nullable: true),
                     Email = table.Column<string>(maxLength: 250, nullable: true),
-                    password = table.Column<string>(maxLength: 50, nullable: true),
+                    password = table.Column<string>(maxLength: 250, nullable: true),
                     ClassId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -59,6 +72,30 @@ namespace ApiTestApp_Grupp3.Migrations
                         principalTable: "Employee",
                         principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeRole",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeRole", x => new { x.EmployeeId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_EmployeeRole_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmployeeRole_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Role",
+                        principalColumn: "RoleId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,7 +156,7 @@ namespace ApiTestApp_Grupp3.Migrations
                     TestId = table.Column<int>(nullable: false),
                     QuestionId = table.Column<int>(nullable: false),
                     Answer = table.Column<string>(maxLength: 3000, nullable: true),
-                    IsCorrect = table.Column<bool>(nullable: false)
+                    IsCorrect = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -199,6 +236,11 @@ namespace ApiTestApp_Grupp3.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmployeeRole_RoleId",
+                table: "EmployeeRole",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Question_CourseId",
                 table: "Question",
                 column: "CourseId");
@@ -232,6 +274,9 @@ namespace ApiTestApp_Grupp3.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "EmployeeRole");
+
+            migrationBuilder.DropTable(
                 name: "StudentQuestionAnswer");
 
             migrationBuilder.DropTable(
@@ -239,6 +284,9 @@ namespace ApiTestApp_Grupp3.Migrations
 
             migrationBuilder.DropTable(
                 name: "TestResult");
+
+            migrationBuilder.DropTable(
+                name: "Role");
 
             migrationBuilder.DropTable(
                 name: "Question");
