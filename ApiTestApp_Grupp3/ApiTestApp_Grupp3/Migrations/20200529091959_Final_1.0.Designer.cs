@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiTestApp_Grupp3.Migrations
 {
     [DbContext(typeof(ApiTestApp_Grupp3Context))]
-    [Migration("20200528133946_2.2")]
-    partial class _22
+    [Migration("20200529091959_Final_1.0")]
+    partial class Final_10
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,8 +65,8 @@ namespace ApiTestApp_Grupp3.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
 
                     b.HasKey("EmployeeId");
 
