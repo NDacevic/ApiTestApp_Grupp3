@@ -31,6 +31,7 @@ namespace ApiTestApp_Grupp3
             services.AddDbContextPool<ApiTestApp_Grupp3Context>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("MainDBConnection")));
 
+            //We've changed the default serializer to the one Newtonsoft made to be able to use the Patch-nuget packages
             services.AddControllers().AddNewtonsoftJson();
             services.AddMvc();
         }

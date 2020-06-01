@@ -21,7 +21,10 @@ namespace ApiTestApp_Grupp3.Controllers
             _context = context;
         }
 
-        // GET: api/LogInStudents
+        /// <summary>
+        /// Currently unused
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult GetStudent()
         {
@@ -57,21 +60,25 @@ namespace ApiTestApp_Grupp3.Controllers
             return NotFound();
         }
 
-        // POST: api/LogInStudents
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Currently unused
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult PostStudent(Student student)
         {
-
             return NotFound();
         }
 
-        // DELETE: api/LogInStudents/5
+        /// <summary>
+        /// Currently unused
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public ActionResult DeleteStudent(int id)
         {
-
             return NotFound();
         }
 

@@ -21,14 +21,20 @@ namespace ApiTestApp_Grupp3.Controllers
             _context = context;
         }
 
-        // GET: api/Courses
+        /// <summary>
+        /// returns all the courses from the Course table
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourse()
         {
             return await _context.Course.ToListAsync();
         }
 
-        // GET: api/Courses/5
+        /// <summary>
+        /// returns the course of the specified id from the Course table
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(int id)
         {
@@ -42,36 +48,18 @@ namespace ApiTestApp_Grupp3.Controllers
             return course;
         }
 
-        // PUT: api/Courses/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+       /// <summary>
+       /// Currently unused
+       /// </summary>
+       /// <param name="id"></param>
+       /// <param name="course"></param>
+       /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse(int id, Course course)
         {
-            if (id != course.CourseId)
-            {
-                return BadRequest();
-            }
+            //Not used method
 
-            _context.Entry(course).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CourseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
 
         // POST: api/Courses
@@ -86,20 +74,16 @@ namespace ApiTestApp_Grupp3.Controllers
             return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
         }
 
-        // DELETE: api/Courses/5
+        /// <summary>
+        /// Unused method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Course>> DeleteCourse(int id)
         {
-            var course = await _context.Course.FindAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            _context.Course.Remove(course);
-            await _context.SaveChangesAsync();
-
-            return course;
+            //Not used
+            return NotFound();
         }
 
         private bool CourseExists(int id)

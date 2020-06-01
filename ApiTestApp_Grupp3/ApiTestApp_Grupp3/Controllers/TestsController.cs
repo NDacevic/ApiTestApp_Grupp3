@@ -21,19 +21,36 @@ namespace ApiTestApp_Grupp3.Controllers
         {
             _context = context;
         }
-
-        // GET: api/Tests
+        /// <summary>
+        /// returns all the courses from the Tests table.
+        /// The questions attached to the test are also included
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Test>>> GetTest()
         {
             var result = await _context.Test.Include(t => t.TestQuestion)
                 .ThenInclude(tq => tq.Question)
-                .Select(t => new { t.TestId, t.Grade, t.Course.CourseName, t.MaxPoints, t.TestDuration, t.IsActive, t.IsGraded, t.StartDate, questions = t.TestQuestion.Select(tq => tq.Question)})
+                .Select(t => new
+                { 
+                    t.TestId,
+                    t.Grade,
+                    t.Course.CourseName,
+                    t.MaxPoints, t.TestDuration,
+                    t.IsActive,
+                    t.IsGraded,
+                    t.StartDate,
+                    questions = t.TestQuestion.Select(tq =>
+                                                tq.Question)
+                })
                 .ToListAsync();
             return Ok(result);
         }
 
-        // GET: api/Tests/5
+        /// <summary>
+        /// returns the course of the specified id from the Tests table
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Test>> GetTest(int id)
         {
@@ -47,25 +64,32 @@ namespace ApiTestApp_Grupp3.Controllers
             return test;
         }
 
-        // PUT: api/Tests/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Patches a test with a specific id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="jsonPatchTest"></param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchTest(int id, [FromBody] JsonPatchDocument<Test> jsonPatchTest)
         {
+            //find the test
             Test updateTest = await _context.Test.FirstOrDefaultAsync(x => x.TestId == id);
 
             if (updateTest == null)
                 return NotFound();
 
+            //apply the changes and append the modelstate that keeps track of the objects in entity framework
             jsonPatchTest.ApplyTo(updateTest, ModelState);
 
+            //check if it's valid after changes are applied
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (!TryValidateModel(updateTest))
                 return BadRequest(ModelState);
 
+            //update the table
             _context.Update(updateTest);
 
             await _context.SaveChangesAsync();
@@ -73,9 +97,11 @@ namespace ApiTestApp_Grupp3.Controllers
             return Ok();
         }
 
-        // POST: api/Tests
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Posts to the Tests and TestQuestion tables
+        /// </summary>
+        /// <param name="test"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Test>> PostTest(Test test)
         {
@@ -86,6 +112,8 @@ namespace ApiTestApp_Grupp3.Controllers
             _context.Test.Add(test);
             await _context.SaveChangesAsync();
 
+            //A list of questions is passed inside the Test object.
+            //Go through these and add the Id of the question and test for writing to the TestQuestion table
             foreach(Question tq in test.Questions)
             {
                 TestQuestion tempTQ = new TestQuestion();
@@ -98,10 +126,13 @@ namespace ApiTestApp_Grupp3.Controllers
             _context.Database.CommitTransaction();
 
             return Ok();
-            //return CreatedAtAction("GetTest", new { id = test.TestId }, test);
         }
 
-        // DELETE: api/Tests/5
+        /// <summary>
+        /// Deletes a test with the specified Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Test>> DeleteTest(int id)
         {

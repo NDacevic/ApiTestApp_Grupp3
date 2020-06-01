@@ -21,14 +21,21 @@ namespace ApiTestApp_Grupp3.Controllers
             _context = context;
         }
 
-        // GET: api/Questions
+        /// <summary>
+        /// Get a list of all questions
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestion()
         {
             return await _context.Question.ToListAsync();
         }
 
-        // GET: api/Questions/5
+        /// <summary>
+        /// Modified Get a list of questions that are all connected to the same course
+        /// </summary>
+        /// <param name="course"></param>
+        /// <returns></returns>
         [HttpGet("{course}")] //Get all questions on the given coursename
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestion(string course)
         {
@@ -47,9 +54,13 @@ namespace ApiTestApp_Grupp3.Controllers
             return studentList;
         }
 
-        // PUT: api/Questions/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Edit a question
+        /// Currently unused
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="question"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutQuestion(int id, Question question)
         {
@@ -79,9 +90,11 @@ namespace ApiTestApp_Grupp3.Controllers
             return NoContent();
         }
 
-        // POST: api/Questions
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Posts a question to the database. Before saving it appends the course name to the question object
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Question>> PostQuestion(Question question)
         {
@@ -92,7 +105,11 @@ namespace ApiTestApp_Grupp3.Controllers
             return Ok();
         }
 
-        // DELETE: api/Questions/5
+        /// <summary>
+        /// Delete a question with a specific id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Question>> DeleteQuestion(int id)
         {
