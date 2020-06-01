@@ -21,14 +21,22 @@ namespace ApiTestApp_Grupp3.Controllers
             _context = context;
         }
 
-        // GET: api/Roles
+        /// <summary>
+        /// Get a list of all Role objects
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Role>>> GetRole()
         {
             return await _context.Role.ToListAsync();
         }
 
-        // GET: api/Roles/5
+        /// <summary>
+        /// Get a role object with a specific id
+        /// Currently unused
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Role>> GetRole(int id)
         {
@@ -42,9 +50,13 @@ namespace ApiTestApp_Grupp3.Controllers
             return role;
         }
 
-        // PUT: api/Roles/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Alter a Role with a specific id
+        /// Currently unused
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRole(int id, Role role)
         {
@@ -74,9 +86,12 @@ namespace ApiTestApp_Grupp3.Controllers
             return NoContent();
         }
 
-        // POST: api/Roles
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Post a new role to the database
+        /// Currently unused
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Role>> PostRole(Role role)
         {
@@ -86,7 +101,12 @@ namespace ApiTestApp_Grupp3.Controllers
             return CreatedAtAction("GetRole", new { id = role.RoleId }, role);
         }
 
-        // DELETE: api/Roles/5
+        /// <summary>
+        /// Delete a role from the database
+        /// currently unused
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Role>> DeleteRole(int id)
         {
