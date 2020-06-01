@@ -22,16 +22,20 @@ namespace ApiTestApp_Grupp3.Controllers
             _context = context;
         }
 
-        // GET: api/Employees
+        /// <summary>
+        /// Get a list of all the employees
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
         {
-            //This is currently used for testing. Change this when API connects successfully.
-            //return Ok("Api works. Wohoo");
             return await _context.Employee.ToListAsync();
         }
 
-        // GET: api/Employees/5
+        /// <summary>
+        /// Get an employee with a specific id
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
@@ -45,25 +49,32 @@ namespace ApiTestApp_Grupp3.Controllers
             return employee;
         }
 
-        // PUT: api/Employees/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Patches an employee with a specific Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="jsonPatchEmployee"></param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchTest(int id, [FromBody] JsonPatchDocument<Employee> jsonPatchEmployee)
         {
+            //find the employee with the Id
             Employee updateEmployee = await _context.Employee.FirstOrDefaultAsync(x => x.EmployeeId == id);
 
             if (updateEmployee == null)
                 return NotFound();
 
+            //Apply the changes and append the entitystate object
             jsonPatchEmployee.ApplyTo(updateEmployee, ModelState);
 
+            //Check for errors
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (!TryValidateModel(updateEmployee))
                 return BadRequest(ModelState);
 
+            //Save the changes
             _context.Update(updateEmployee);
 
             await _context.SaveChangesAsync();
@@ -71,9 +82,11 @@ namespace ApiTestApp_Grupp3.Controllers
             return Ok();
         }
 
-        // POST: api/Employees
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Adds an employee to the database and connects the employee with a specific role
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
@@ -92,7 +105,6 @@ namespace ApiTestApp_Grupp3.Controllers
             }
             catch
             {
-
                 return BadRequest();
             }
 
@@ -100,7 +112,11 @@ namespace ApiTestApp_Grupp3.Controllers
         }
 
 
-        // DELETE: api/Employees/5
+        /// <summary>
+        /// Delete an employee with a speicifc Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Employee>> DeleteEmployee(int id)
         {
