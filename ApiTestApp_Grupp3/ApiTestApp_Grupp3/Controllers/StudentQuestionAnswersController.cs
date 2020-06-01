@@ -21,14 +21,22 @@ namespace ApiTestApp_Grupp3.Controllers
             _context = context;
         }
 
-        // GET: api/StudentQuestionAnswers
+        /// <summary>
+        /// Gets all the StudentQuestionAnswer objects from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentQuestionAnswer>>> GetStudentQuestionAnswer()
         {
             return await _context.StudentQuestionAnswer.ToListAsync();
         }
 
-        // GET: api/StudentQuestionAnswers/5
+        /// <summary>
+        /// Gets a StudentQuestionAnswer object with a specific id
+        /// Currently unused since this is a bridge table without a single primary key
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<StudentQuestionAnswer>> GetStudentQuestionAnswer(int id)
         {
@@ -42,9 +50,11 @@ namespace ApiTestApp_Grupp3.Controllers
             return studentQuestionAnswer;
         }
 
-        // PUT: api/StudentQuestionAnswers/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// PUT Modified to take a list of SQA objects and update them all at the same time if they all have entries in the database (they always should)
+        /// </summary>
+        /// <param name="updatedSqaList"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> PutStudentQuestionAnswer(List<StudentQuestionAnswer> updatedSqaList)
         {
@@ -74,13 +84,15 @@ namespace ApiTestApp_Grupp3.Controllers
             return Ok();
         }
 
-        // POST: api/StudentQuestionAnswers
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// POST Modified to take a list of SQA objects and writes them all to the database
+        /// </summary>
+        /// <param name="studentQuestionAnswers"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<StudentQuestionAnswer>> PostStudentQuestionAnswer(List<StudentQuestionAnswer> studentQuestionAnswers)
         {
-            //Lopp through list of objects to save            
+            //Loop through list of objects to save            
             foreach (StudentQuestionAnswer studentQuestionAnswer in studentQuestionAnswers)
             {
                 _context.StudentQuestionAnswer.Add(studentQuestionAnswer);
@@ -99,7 +111,11 @@ namespace ApiTestApp_Grupp3.Controllers
             return CreatedAtAction("GetStudentQuestionAnswer", studentQuestionAnswers);
         }
 
-        // DELETE: api/StudentQuestionAnswers/5
+        /// <summary>
+        /// Deletes a SQA object with a specific id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<StudentQuestionAnswer>> DeleteStudentQuestionAnswer(int id)
         {
