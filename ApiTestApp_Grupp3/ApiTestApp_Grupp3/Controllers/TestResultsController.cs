@@ -21,14 +21,21 @@ namespace ApiTestApp_Grupp3.Controllers
             _context = context;
         }
 
-        // GET: api/TestResults
+        /// <summary>
+        /// Gets a list of TestResult objects
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TestResult>>> GetTestResult()
         {
             return await _context.TestResult.ToListAsync();
         }
 
-        // GET: api/TestResults/5
+        /// <summary>
+        /// GET Modified to return a list of TestResult for a specific testid. (There will always be multiple entries)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<TestResult>> GetTestResult(int id)
         {
@@ -48,9 +55,13 @@ namespace ApiTestApp_Grupp3.Controllers
             return Ok(testResults);
         }
 
-        // PUT: api/TestResults/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Edits a TestResult in the databse
+        /// Currently unused
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="testResult"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTestResult(int id, TestResult testResult)
         {
@@ -106,7 +117,11 @@ namespace ApiTestApp_Grupp3.Controllers
             return CreatedAtAction("GetTestResult", new { id = testResult.StudentId }, testResult);
         }
 
-        // DELETE: api/TestResults/5
+        /// <summary>
+        /// Delete a TestResult with a specific Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<TestResult>> DeleteTestResult(int id)
         {
