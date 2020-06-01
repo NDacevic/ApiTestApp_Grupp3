@@ -21,19 +21,21 @@ namespace ApiTestApp_Grupp3.Controllers
             _context = context;
         }
 
-        // GET: api/LogInEmployees
+        /// <summary>
+        /// Currently unused
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult GetEmployee()
         {
             return NotFound();
         }
+
         /// <summary>
         /// Returns the employee with matching email to be able to log in
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-
-        // GET: api/LogInEmployees/5
         [HttpGet("{email}")]
         public async Task<ActionResult<Employee>> GetEmployee(string email)
         {
@@ -49,26 +51,34 @@ namespace ApiTestApp_Grupp3.Controllers
 
         }
 
-        // PUT: api/LogInEmployees/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Currently unused
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult PutEmployee(int id, Employee employee)
         {
-
             return NotFound();
         }
 
-        // POST: api/LogInEmployees
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Currently unused
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult PostEmployee(Employee employee)
         {
             return NotFound();
         }
 
-        // DELETE: api/LogInEmployees/5
+        /// <summary>
+        /// Currently unused
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public ActionResult DeleteEmployee(int id)
         { 
