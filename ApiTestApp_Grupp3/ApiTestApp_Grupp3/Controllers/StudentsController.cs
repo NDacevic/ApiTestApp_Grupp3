@@ -27,16 +27,23 @@ namespace ApiTestApp_Grupp3.Controllers
             _context = context;
         }
 
-        // GET: api/Students
+        /// <summary>
+        /// Get a list of students
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult> GetStudent()
         {
-            var studentList = await _context.Student.Select(x => x).ToListAsync();
+            var studentList = await _context.Student.ToListAsync();
 
             return Ok(studentList);
         }
 
-        // GET: api/Students/5
+        /// <summary>
+        /// Get a student with a specific Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
@@ -50,25 +57,32 @@ namespace ApiTestApp_Grupp3.Controllers
             return student;
         }
 
-        // PUT: api/Students/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Patches a student with the supplied information
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="jsonPatchStudent"></param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
         public async Task<IActionResult> PutStudent(int id, [FromBody] JsonPatchDocument<Student> jsonPatchStudent)
         {
+            //Find the student with the Id
             Student updateStudent = await _context.Student.FirstOrDefaultAsync(x => x.StudentId == id);
 
             if (updateStudent == null)
                 return NotFound();
 
+            //Apply the changes
             jsonPatchStudent.ApplyTo(updateStudent, ModelState);
 
+            //Check for errors after changes have been applied
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (!TryValidateModel(updateStudent))
                 return BadRequest(ModelState);
 
+            //Save the changes
             _context.Update(updateStudent);
 
             await _context.SaveChangesAsync();
@@ -76,9 +90,11 @@ namespace ApiTestApp_Grupp3.Controllers
             return Ok();
         }
 
-        // POST: api/Students
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Adds a new student to the students table
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Student>> PostStudent(Student student)
         {
@@ -89,13 +105,17 @@ namespace ApiTestApp_Grupp3.Controllers
             }
             catch
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return Ok();
         }
 
-        // DELETE: api/Students/5
+        /// <summary>
+        /// Delete a student with a specific Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Student>> DeleteStudent(int id)
         {
